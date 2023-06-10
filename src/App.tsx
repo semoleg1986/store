@@ -1,5 +1,4 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import Crud from './pages/Crud';
 import Home from './pages/Home';
 import Stock from './pages/Stock';
 import Signup from './components/Auth/Signup';
@@ -22,9 +21,6 @@ const App = () => {
         {
           index: true,
           element: <Home />
-        },{
-          path: CRUD_PAGE,
-          element: <Crud />
         },{
           path: SIGN_UP,
           element: <Signup />
