@@ -32,9 +32,10 @@ export const LOGIN_USER = gql`
       user {
         id
         username
-        sellerProfile {
+        buyerProfile {
           id
-          companyName
+          name
+          surname
         }
       }
     }
