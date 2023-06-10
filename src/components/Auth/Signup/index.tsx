@@ -1,18 +1,19 @@
 import { useMutation } from "@apollo/client";
-import { CREATE_SELLER, CREATE_USER } from "../../../graphql/mutation/auth";
+import { CREATE_BUYER, CREATE_USER } from "../../../graphql/mutation/auth";
 import { Button, FormContainer, Input } from "../../Form/Form.styled";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
     const [createUser] = useMutation(CREATE_USER);
-    const [createSeller] = useMutation(CREATE_SELLER);
+    const [createBuyer] = useMutation(CREATE_BUYER);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
-    const [showSellerFields, setShowSellerFields] = useState(false);
-    const [companyName, setCompanyName] = useState("");
-    const [description, setDescription] = useState("");
+    const [showBuyerFields, setShowBuyerFields] = useState(false);
+    const [name, setName] = useState("");
+    const [surname, setSurname] = useState("");
+    const [address, setAddress] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
     const [userId, setUserId] = useState(null);
     const navigate = useNavigate();
@@ -20,7 +21,7 @@ const Signup = () => {
     
     const handleCreateUser = async () => {
         try {
-          if (!showSellerFields) {
+          if (!showBuyerFields) {
           const { data } = await createUser({
             variables: { email, password, username },
           });
@@ -28,26 +29,28 @@ const Signup = () => {
           setUserId(createdUserId); 
           console.log(createdUserId);
 
-          setShowSellerFields(true);
+          setShowBuyerFields(true);
           // console.log(data);
           // Handle success or perform any other actions
         } else {
-          const sellerData = await createSeller({
+          const buyerData = await createBuyer({
             variables: {
-              companyName: companyName,
-              description: description,
+              name: name,
+              surname: surname,
               phoneNumber: phoneNumber,
+              address: address,
               userId: userId,
             },
           });
-          console.log(sellerData);
-          navigate('/crud');
+          console.log(buyerData);
+          navigate('/stock');
 
-          setCompanyName("");
-          setDescription("");
+          setName("");
+          setSurname("");
           setPhoneNumber("");
+          setAddress("");
 
-          setShowSellerFields(false);
+          setShowBuyerFields(false);
           }
         }
           catch (error) {
@@ -60,7 +63,7 @@ const Signup = () => {
     return (
         <div>
             <FormContainer>
-              {!showSellerFields && (
+              {!showBuyerFields && (
                 <>
             <Input
                 type="email"
@@ -83,19 +86,19 @@ const Signup = () => {
             </>
            )}
 
-           {showSellerFields && (
+           {showBuyerFields && (
             <>
             <Input
               type="text"
-              placeholder="company name"
-              value={companyName}
-              onChange={(e) => setCompanyName(e.target.value)}
+              placeholder="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
             />
             <Input
               type="text"
-              placeholder="description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
+              placeholder="surname"
+              value={surname}
+              onChange={(e) => setSurname(e.target.value)}
             />
             <Input
               type="text"
@@ -103,10 +106,16 @@ const Signup = () => {
               value={phoneNumber}
               onChange={(e) => setPhoneNumber(e.target.value)}
             />
+            <Input
+              type="text"
+              placeholder="address"
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+            />
           </>
         )}
             <Button onClick={handleCreateUser}>
-          {showSellerFields ? "Create Seller" : "Sign Up"}
+          {showBuyerFields ? "Create Buyer" : "Sign Up"}
         </Button>
       </FormContainer>
         </div>

@@ -63,3 +63,28 @@ mutation creaetSeller(
   }
 }
 `;
+
+export const CREATE_BUYER = gql`
+mutation createBuyer(
+  $name: String!
+  $surname: String!
+  $phoneNumber: String!
+  $address: String!
+  $userId: ID!
+) {
+  createBuyer(
+    name: $name
+    surname: $surname
+    phoneNumber: $phoneNumber
+    address: $address
+    userId: $userId
+  ) {
+    buyer {
+      id
+      user {
+        username
+      }
+    }
+  }
+}
+`;
