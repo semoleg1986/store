@@ -20,8 +20,8 @@ const Login = () => {
   const [loginUserMutation, { loading, error }] = useMutation(LOGIN_USER, {
     onCompleted: (data: any) => {
       const token = data.loginUser.token;
-      const idSeller = data.loginUser.user.sellerProfile.id
-      dispatch(loginUser({ token, idSeller }));
+      const idBuyer = data.loginUser.user.buyerProfile.id
+      dispatch(loginUser({ token, idBuyer }));
       navigate(ROOT_PAGE);
     },
     onError: (error: any) => {
