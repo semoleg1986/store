@@ -61,26 +61,26 @@ function Signup() {
     <div>
       <FormContainer>
         {!showBuyerFields && (
-        <>
-          <Input
-            type="email"
-            placeholder="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <Input
-            type="password"
-            placeholder="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <Input
-            type="text"
-            placeholder="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </>
+          <>
+            <Input
+              type="email"
+              placeholder="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <Input
+              type="password"
+              placeholder="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <Input
+              type="text"
+              placeholder="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+          </>
         )}
 
         {showBuyerFields && (
@@ -111,9 +111,7 @@ function Signup() {
             />
           </>
         )}
-        <Button onClick={handleCreateUser}>
-          {showBuyerFields ? 'Create Buyer' : 'Sign Up'}
-        </Button>
+        <Button onClick={handleCreateUser}>{showBuyerFields ? 'Create Buyer' : 'Sign Up'}</Button>
       </FormContainer>
     </div>
   );

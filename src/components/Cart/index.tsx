@@ -6,7 +6,15 @@ import { Product } from '../../types';
 
 import { addToCart, removeFromCart } from '../../store/cartSlice';
 import {
-  ButtonP, CartTable, TableBody, TableCell, TableHead, TableHeader, TableRow, TotalCell, TotalRow,
+  ButtonP,
+  CartTable,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+  TotalCell,
+  TotalRow,
 } from './Cart.styled';
 import { toggleCart } from '../../store/cartState';
 import { Button } from '../Form/Form.styled';
@@ -23,7 +31,8 @@ function Cart({ show = true }) {
     dispatch(addToCart({ product }));
   };
 
-  const getTotalCost = () => cartItems.reduce((total, item) => total + item.quantity * item.product.price, 0);
+  const getTotalCost = () =>
+    cartItems.reduce((total, item) => total + item.quantity * item.product.price, 0);
 
   const handleToggleCart = () => {
     dispatch(toggleCart());
@@ -54,18 +63,14 @@ function Cart({ show = true }) {
               <TableRow key={item.product.id}>
                 <TableCell>{item.product.name}</TableCell>
                 <TableCell>
-                  {show && <ButtonP onClick={() => handleRemoveFromCart(item.product.id)}>-</ButtonP>}
+                  {show && (
+                    <ButtonP onClick={() => handleRemoveFromCart(item.product.id)}>-</ButtonP>
+                  )}
                   {item.quantity}
                   {show && <ButtonP onClick={() => handleAddToCart(item.product)}>+</ButtonP>}
                 </TableCell>
-                <TableCell>
-                  $
-                  {item.product.price}
-                </TableCell>
-                <TableCell>
-                  $
-                  {item.quantity * item.product.price}
-                </TableCell>
+                <TableCell>${item.product.price}</TableCell>
+                <TableCell>${item.quantity * item.product.price}</TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -73,18 +78,13 @@ function Cart({ show = true }) {
             <TotalRow>
               <td colSpan={2} />
               <TotalCell>Total:</TotalCell>
-              <TotalCell>
-                $
-                {getTotalCost()}
-              </TotalCell>
+              <TotalCell>${getTotalCost()}</TotalCell>
             </TotalRow>
           </tfoot>
         </CartTable>
       )}
       {show && <Button onClick={handleToggleCart}>Exit</Button>}
-      {show && cartItems.length > 0 && (
-      <Button onClick={handleCheckout}>Checkout</Button>
-      )}
+      {show && cartItems.length > 0 && <Button onClick={handleCheckout}>Checkout</Button>}
     </div>
   );
 }
