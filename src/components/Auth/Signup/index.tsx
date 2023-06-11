@@ -1,93 +1,90 @@
-import { useMutation } from "@apollo/client";
-import { CREATE_BUYER, CREATE_USER } from "../../../graphql/mutation/auth";
-import { Button, FormContainer, Input } from "../../Form/Form.styled";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useMutation } from '@apollo/client';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { CREATE_BUYER, CREATE_USER } from '../../../graphql/mutation/auth';
+import { Button, FormContainer, Input } from '../../Form/Form.styled';
 
-const Signup = () => {
-    const [createUser] = useMutation(CREATE_USER);
-    const [createBuyer] = useMutation(CREATE_BUYER);
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [username, setUsername] = useState('');
-    const [showBuyerFields, setShowBuyerFields] = useState(false);
-    const [name, setName] = useState("");
-    const [surname, setSurname] = useState("");
-    const [address, setAddress] = useState("");
-    const [phoneNumber, setPhoneNumber] = useState("");
-    const [userId, setUserId] = useState(null);
-    const navigate = useNavigate();
+function Signup() {
+  const [createUser] = useMutation(CREATE_USER);
+  const [createBuyer] = useMutation(CREATE_BUYER);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('');
+  const [showBuyerFields, setShowBuyerFields] = useState(false);
+  const [name, setName] = useState('');
+  const [surname, setSurname] = useState('');
+  const [address, setAddress] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [userId, setUserId] = useState(null);
+  const navigate = useNavigate();
 
-    
-    const handleCreateUser = async () => {
-        try {
-          if (!showBuyerFields) {
-          const { data } = await createUser({
-            variables: { email, password, username },
-          });
-          const createdUserId = data.createUser.user.id;
-          setUserId(createdUserId); 
-          console.log(createdUserId);
+  const handleCreateUser = async () => {
+    try {
+      if (!showBuyerFields) {
+        const { data } = await createUser({
+          variables: { email, password, username },
+        });
+        const createdUserId = data.createUser.user.id;
+        setUserId(createdUserId);
+        console.log(createdUserId);
 
-          setShowBuyerFields(true);
-          // console.log(data);
-          // Handle success or perform any other actions
-        } else {
-          const buyerData = await createBuyer({
-            variables: {
-              name: name,
-              surname: surname,
-              phoneNumber: phoneNumber,
-              address: address,
-              userId: userId,
-            },
-          });
-          console.log(buyerData);
-          navigate('/stock');
+        setShowBuyerFields(true);
+        // console.log(data);
+        // Handle success or perform any other actions
+      } else {
+        const buyerData = await createBuyer({
+          variables: {
+            name,
+            surname,
+            phoneNumber,
+            address,
+            userId,
+          },
+        });
+        console.log(buyerData);
+        navigate('/stock');
 
-          setName("");
-          setSurname("");
-          setPhoneNumber("");
-          setAddress("");
+        setName('');
+        setSurname('');
+        setPhoneNumber('');
+        setAddress('');
 
-          setShowBuyerFields(false);
-          }
-        }
-          catch (error) {
-          console.error(error);
-          // Handle error or display an error message
-        }
-      };
+        setShowBuyerFields(false);
+      }
+    } catch (error) {
+      console.error(error);
+      // Handle error or display an error message
+    }
+  };
 
+  return (
+    <div>
+      <FormContainer>
+        {!showBuyerFields && (
+        <>
+          <Input
+            type="email"
+            placeholder="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <Input
+            type="password"
+            placeholder="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <Input
+            type="text"
+            placeholder="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+        </>
+        )}
 
-    return (
-        <div>
-            <FormContainer>
-              {!showBuyerFields && (
-                <>
-            <Input
-                type="email"
-                placeholder="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-            />
-            <Input
-                type="password"
-                placeholder="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-            />
-            <Input
-                type="text"
-                placeholder="username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-            />
-            </>
-           )}
-
-           {showBuyerFields && (
-            <>
+        {showBuyerFields && (
+          <>
             <Input
               type="text"
               placeholder="name"
@@ -114,12 +111,12 @@ const Signup = () => {
             />
           </>
         )}
-            <Button onClick={handleCreateUser}>
-          {showBuyerFields ? "Create Buyer" : "Sign Up"}
+        <Button onClick={handleCreateUser}>
+          {showBuyerFields ? 'Create Buyer' : 'Sign Up'}
         </Button>
       </FormContainer>
-        </div>
-    )
+    </div>
+  );
 }
 
 export default Signup;

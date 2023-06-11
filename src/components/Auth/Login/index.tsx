@@ -1,9 +1,9 @@
 import React, { useState, FormEvent } from 'react';
 import { useMutation } from '@apollo/client';
-import { LOGIN_USER } from '../../../graphql/mutation/auth';
 import { useNavigate } from 'react-router-dom';
-import { ROOT_PAGE } from '../../../routes';
 import { useDispatch } from 'react-redux';
+import { LOGIN_USER } from '../../../graphql/mutation/auth';
+import { ROOT_PAGE } from '../../../routes';
 import { loginUser } from '../../../store/authSlice';
 
 interface LoginData {
@@ -11,7 +11,7 @@ interface LoginData {
   password: string;
 }
 
-const Login = () => {
+function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
@@ -19,8 +19,8 @@ const Login = () => {
 
   const [loginUserMutation, { loading, error }] = useMutation(LOGIN_USER, {
     onCompleted: (data: any) => {
-      const token = data.loginUser.token;
-      const idBuyer = data.loginUser.user.buyerProfile.id
+      const { token } = data.loginUser;
+      const idBuyer = data.loginUser.user.buyerProfile.id;
       dispatch(loginUser({ token, idBuyer }));
       navigate(ROOT_PAGE);
     },
@@ -44,7 +44,6 @@ const Login = () => {
       <h1>Страница авторизации</h1>
       <form onSubmit={handleSubmit}>
         <div>
-          <label>Имя пользователя:</label>
           <input
             type="text"
             value={username}
@@ -52,7 +51,6 @@ const Login = () => {
           />
         </div>
         <div>
-          <label>Пароль:</label>
           <input
             type="password"
             value={password}
@@ -66,6 +64,6 @@ const Login = () => {
       </form>
     </div>
   );
-};
+}
 
 export default Login;

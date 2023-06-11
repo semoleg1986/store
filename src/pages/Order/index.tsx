@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useMutation } from '@apollo/client';
+import { useNavigate } from 'react-router-dom';
 import { RootState } from '../../store';
 import { CREATE_ORDER } from '../../graphql/mutation/order';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { clearCart } from '../../store/cartSlice';
 
-
-const Order = () => {
+function Order() {
   const cartItems = useSelector((state: RootState) => state.cart);
   const [createOrder] = useMutation(CREATE_ORDER);
   const [name, setName] = useState('');
@@ -18,23 +16,21 @@ const Order = () => {
   const [email, setEmail] = useState('');
   const dispatch = useDispatch();
 
-
   const navigate = useNavigate();
-
 
   const handlePlaceOrder = () => {
     const productIds = cartItems.map((item) => item.product.id);
     const quantities = cartItems.map((item) => item.quantity);
-    
+
     createOrder({
       variables: {
-        name: name,
-        surname: surname,
-        phoneNumber: phoneNumber,
-        address: address,
-        email: email,
-        productIds: productIds,
-        quantities: quantities,
+        name,
+        surname,
+        phoneNumber,
+        address,
+        email,
+        productIds,
+        quantities,
       },
     })
       .then((response) => {
@@ -43,42 +39,49 @@ const Order = () => {
       .catch((error) => {
         // Handle error, e.g., display error message
       });
-      dispatch(clearCart());
-      navigate('/order-details');
+    dispatch(clearCart());
+    navigate('/order-details');
   };
 
-  const getTotalCost = () => {
-    return cartItems.reduce((total, item) => total + item.quantity * item.product.price, 0);
-  };
+  const getTotalCost = () => cartItems.reduce((total, item) => total + item.quantity * item.product.price, 0);
 
   return (
     <div>
-        <table>
-          <thead>
-            <tr>
-              <th>Product Name</th>
-              <th>Quantity</th>
-              <th>Price</th>
-              <th>Total</th>
+      <table>
+        <thead>
+          <tr>
+            <th>Product Name</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          {cartItems.map((item) => (
+            <tr key={item.product.id}>
+              <td>{item.product.name}</td>
+              <td>{item.quantity}</td>
+              <td>
+                $
+                {item.product.price}
+              </td>
+              <td>
+                $
+                {item.quantity * item.product.price}
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {cartItems.map((item) => (
-              <tr key={item.product.id}>
-                <td>{item.product.name}</td>
-                <td>{item.quantity}</td>
-                <td>${item.product.price}</td>
-                <td>${item.quantity * item.product.price}</td>
-              </tr>
-            ))}
-          </tbody>
-          <tfoot>
-            <tr>
-              <td colSpan={3}>Total:</td>
-              <td>${getTotalCost()}</td>
-            </tr>
-          </tfoot>
-        </table>
+          ))}
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colSpan={3}>Total:</td>
+            <td>
+              $
+              {getTotalCost()}
+            </td>
+          </tr>
+        </tfoot>
+      </table>
       <h2>Order</h2>
       {/* Form inputs for name, surname, phone number, address, email */}
       <input
@@ -112,8 +115,8 @@ const Order = () => {
         placeholder="Email"
       />
       <button onClick={handlePlaceOrder}>Place Order</button>
-      </div>
+    </div>
   );
-};
+}
 
 export default Order;
