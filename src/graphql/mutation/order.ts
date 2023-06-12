@@ -57,3 +57,18 @@ export const GET_ORDER = gql`
     }
   }
 `;
+
+export const ORDER_BY_BUYER_ID = gql`
+  query ($buyerId: ID!) {
+    ordersByBuyerId(buyerId: $buyerId) {
+      id
+      receiptNumber
+      name
+      surname
+      phoneNumber
+      address
+      status
+      updateDate
+    }
+  }
+`;
