@@ -11,6 +11,9 @@ const GET_PRODUCTS = gql`
       category {
         name
       }
+      seller {
+        id
+      }
     }
   }
 `;

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useMutation, useQuery } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
 import { RootState } from '../../store';
 import { CREATE_ORDER } from '../../graphql/mutation/order';
-// import { clearCart } from '../../store/cartSlice';
+import { clearCart } from '../../store/cartSlice';
 import { GET_BUYER_BY_ID } from '../../graphql/mutation/auth';
 import {
   CartTable,
@@ -19,6 +19,7 @@ function Order() {
   const buyerId = useSelector((state: RootState) => state.auth.idBuyer);
   const cartItems = useSelector((state: RootState) => state.cart);
   const [createOrder] = useMutation(CREATE_ORDER);
+  const dispatch = useDispatch();
 
   const { loading, error, data } = useQuery(GET_BUYER_BY_ID, {
     variables: { buyerId },
@@ -33,9 +34,10 @@ function Order() {
     try {
       const productsIds = cartItems.map((item) => item.product.id);
       const quantities = cartItems.map((item) => item.quantity);
+      const sellerId = cartItems.map((item) => item.product.seller.id);
       await createOrder({
         variables: {
-          // нужно доабвить sellerId из ls
+          sellerId,
           buyerId,
           name: data.buyerById.name,
           surname: data.buyerById.surname,
@@ -47,6 +49,7 @@ function Order() {
         },
       });
       console.log(productsIds);
+      dispatch(clearCart());
     } catch (err) {
       console.log('Error crreating order:', err);
       navigate('orderlist');

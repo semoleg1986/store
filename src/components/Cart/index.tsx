@@ -32,17 +32,15 @@ function Cart({ show = true }) {
   };
 
   const getTotalCost = () => {
-  if (!Array.isArray(cartItems) || cartItems.length === 0) {
-    return 0;
-  }
+    if (!Array.isArray(cartItems) || cartItems.length === 0) {
+      return 0;
+    }
 
-  return cartItems.reduce(
-    (total: number, item: CartItem) => total + item.quantity * item.product.price,
-    0
-  );
-};
-
-
+    return cartItems.reduce(
+      (total: number, item: CartItem) => total + item.quantity * item.product.price,
+      0
+    );
+  };
 
   const handleToggleCart = () => {
     dispatch(toggleCart());

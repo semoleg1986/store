@@ -8,6 +8,9 @@ export interface Product {
     id: string;
     name: string;
   };
+  seller: {
+    id: string;
+  };
 }
 
 export interface LoginData {
