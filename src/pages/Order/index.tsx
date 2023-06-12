@@ -35,6 +35,7 @@ function Order() {
       const productsIds = cartItems.map((item) => item.product.id);
       const quantities = cartItems.map((item) => item.quantity);
       const sellerId = cartItems.find((item) => item)?.product?.seller?.id;
+      console.log(productsIds); // добавил consolelog для проверки ProductsIds
       await createOrder({
         variables: {
           sellerId,
