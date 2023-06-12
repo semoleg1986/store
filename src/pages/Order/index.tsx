@@ -32,10 +32,10 @@ function Order() {
 
   const handleCreateOrder = async () => {
     try {
-      const productsIds = cartItems.map((item) => item.product.id);
+      const productIds = cartItems.map((item) => item.product.id);
       const quantities = cartItems.map((item) => item.quantity);
       const sellerId = cartItems.find((item) => item)?.product?.seller?.id;
-      console.log(productsIds); // добавил consolelog для проверки ProductsIds
+      console.log(productIds); // добавил consolelog для проверки ProductsIds
       await createOrder({
         variables: {
           sellerId,
@@ -45,15 +45,15 @@ function Order() {
           phoneNumber: data.buyerById.phoneNumber,
           address: data.buyerById.address,
           email: data.buyerById.user.email,
-          productsIds,
+          productIds,
           quantities,
         },
       });
       console.log(sellerId);
       dispatch(clearCart());
+      navigate('/order-details');
     } catch (err) {
       console.log('Error crreating order:', err);
-      navigate('orderlist');
     }
   };
 
