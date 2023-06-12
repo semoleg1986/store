@@ -12,12 +12,12 @@ import {
   NOT_FOUND_PAGE,
   STOCK_PAGE,
   ORDER_PAGE,
-  ORDER_DETAILS_PAGE,
   SIGN_UP,
   SIGN_IN,
+  ORDER_LIST_PAGE,
 } from './routes';
 import Order from './pages/Order';
-import OrderDetails from './pages/Order/orderDetails';
+import OrderList from './pages/Order/orderList';
 
 function App() {
   const router = createBrowserRouter([
@@ -46,8 +46,8 @@ function App() {
           element: <Order />,
         },
         {
-          path: ORDER_DETAILS_PAGE,
-          element: <OrderDetails />,
+          path: ORDER_LIST_PAGE,
+          element: <OrderList />,
         },
         {
           path: NOT_FOUND_PAGE,
