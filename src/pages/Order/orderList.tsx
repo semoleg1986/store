@@ -35,13 +35,14 @@ function OrderList() {
   }
 
   const archiveOrders = orders.filter((order: Order) => order.status === 'Завершен');
+  const activeOrders = orders.filter((order: Order) => order.status !== 'Завершен');
 
   return (
     <div>
       <h3>Order List</h3>
       <div>
         <h4>Active Orders</h4>
-        {orders.map((order: Order) => (
+        {activeOrders.map((order: Order) => (
           <div key={order.id} className="order-item">
             <p className="order-info">Receipt Number: {order.receiptNumber}</p>
             <p className="order-info">Name: {order.name}</p>
