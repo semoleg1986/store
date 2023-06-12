@@ -1,114 +1,131 @@
 import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { useMutation } from '@apollo/client';
+import { useSelector } from 'react-redux';
+import { useMutation, useQuery } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
 import { RootState } from '../../store';
 import { CREATE_ORDER } from '../../graphql/mutation/order';
-import { clearCart } from '../../store/cartSlice';
+// import { clearCart } from '../../store/cartSlice';
+import { GET_BUYER_BY_ID } from '../../graphql/mutation/auth';
+import {
+  CartTable,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '../../components/Cart/Cart.styled';
 
 function Order() {
+  const buyerId = useSelector((state: RootState) => state.auth.idBuyer);
   const cartItems = useSelector((state: RootState) => state.cart);
   const [createOrder] = useMutation(CREATE_ORDER);
-  const [name, setName] = useState('');
-  const [surname, setSurname] = useState('');
+
+  const { loading, error, data } = useQuery(GET_BUYER_BY_ID, {
+    variables: { buyerId },
+  });
+  if (data) console.log(data.buyerById.name);
+
   const [phoneNumber, setPhoneNumber] = useState('');
   const [address, setAddress] = useState('');
-  const [email, setEmail] = useState('');
-  const dispatch = useDispatch();
-
   const navigate = useNavigate();
 
-  const handlePlaceOrder = () => {
-    const productIds = cartItems.map((item) => item.product.id);
-    const quantities = cartItems.map((item) => item.quantity);
-
-    createOrder({
-      variables: {
-        name,
-        surname,
-        phoneNumber,
-        address,
-        email,
-        productIds,
-        quantities,
-      },
-    })
-      .then((response) => {
-        console.log(response);
-        // Handle successful response, e.g., display success message or navigate to a success page
-      })
-      .catch((error) => {
-        console.error(error);
-        // Handle error, e.g., display error message
+  const handleCreateOrder = async () => {
+    try {
+      const productsIds = cartItems.map((item) => item.product.id);
+      const quantities = cartItems.map((item) => item.quantity);
+      await createOrder({
+        variables: {
+          // нужно доабвить sellerId из ls
+          buyerId,
+          name: data.buyerById.name,
+          surname: data.buyerById.surname,
+          phoneNumber: data.buyerById.phoneNumber,
+          address: data.buyerById.address,
+          email: data.buyerById.user.email,
+          productsIds,
+          quantities,
+        },
       });
-    dispatch(clearCart());
-    navigate('/order-details');
+      console.log(productsIds);
+    } catch (err) {
+      console.log('Error crreating order:', err);
+      navigate('orderlist');
+    }
   };
 
-  const getTotalCost = () =>
-    cartItems.reduce((total, item) => total + item.quantity * item.product.price, 0);
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error occurred</div>;
+  }
+
+  const totalPrice = cartItems.reduce(
+    (total, item) => total + item.product.price * item.quantity,
+    0
+  );
 
   return (
     <div>
-      <table>
-        <thead>
+      <h1>Order Details</h1>
+      <CartTable>
+        <TableHead>
           <tr>
-            <th>Product Name</th>
-            <th>Quantity</th>
-            <th>Price</th>
-            <th>Total</th>
+            <TableHeader>Product Name</TableHeader>
+            <TableHeader>Quantity</TableHeader>
+            <TableHeader>Price</TableHeader>
+            <TableHeader>Subtotal</TableHeader>
           </tr>
-        </thead>
-        <tbody>
+        </TableHead>
+        <TableBody>
           {cartItems.map((item) => (
-            <tr key={item.product.id}>
-              <td>{item.product.name}</td>
-              <td>{item.quantity}</td>
-              <td>${item.product.price}</td>
-              <td>${item.quantity * item.product.price}</td>
-            </tr>
+            <TableRow key={item.product.id}>
+              <TableCell>{item.product.name}</TableCell>
+              <TableCell>{item.quantity}</TableCell>
+              <TableCell>{item.product.price}</TableCell>
+              <TableCell>{item.quantity * item.product.price}.00</TableCell>
+            </TableRow>
           ))}
-        </tbody>
-        <tfoot>
-          <tr>
-            <td colSpan={3}>Total:</td>
-            <td>${getTotalCost()}</td>
-          </tr>
-        </tfoot>
-      </table>
-      <h2>Order</h2>
-      {/* Form inputs for name, surname, phone number, address, email */}
-      <input
-        type="text"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        placeholder="Name"
-      />
-      <input
-        type="text"
-        value={surname}
-        onChange={(e) => setSurname(e.target.value)}
-        placeholder="Surname"
-      />
-      <input
-        type="text"
-        value={phoneNumber}
-        onChange={(e) => setPhoneNumber(e.target.value)}
-        placeholder="Phone Number"
-      />
-      <input
-        type="text"
-        value={address}
-        onChange={(e) => setAddress(e.target.value)}
-        placeholder="Address"
-      />
-      <input
-        type="text"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Email"
-      />
-      <button type="button" onClick={handlePlaceOrder}>
+        </TableBody>
+        <TableRow>
+          <TableCell>Total:</TableCell>
+          <TableCell>{totalPrice}.00</TableCell>
+        </TableRow>
+      </CartTable>
+
+      <h2>Personal Information</h2>
+      {/* Форма для имени, фамилии, телефона и адреса */}
+      <form>
+        <label htmlFor="name">
+          First Name:
+          <input type="text" value={data.buyerById.name} readOnly />
+        </label>
+        <br />
+        <label htmlFor="surname">
+          Last Name:
+          <input type="text" value={data.buyerById.surname} readOnly />
+        </label>
+        <br />
+        <label htmlFor="phoneNumber">
+          Phone:
+          <input
+            type="text"
+            value={phoneNumber || data.buyerById?.phoneNumber}
+            onChange={(e) => setPhoneNumber(e.target.value)}
+          />
+        </label>
+        <br />
+        <label htmlFor="address">
+          Address:
+          <input
+            type="text"
+            value={address || data.buyerById?.address}
+            onChange={(e) => setAddress(e.target.value)}
+          />
+        </label>
+      </form>
+      <button type="button" onClick={handleCreateOrder}>
         Place Order
       </button>
     </div>

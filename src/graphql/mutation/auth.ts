@@ -52,3 +52,20 @@ export const CREATE_BUYER = gql`
     }
   }
 `;
+
+export const GET_BUYER_BY_ID = gql`
+  query ($buyerId: ID!) {
+    buyerById(buyerId: $buyerId) {
+      id
+      user {
+        id
+        username
+        email
+      }
+      phoneNumber
+      name
+      surname
+      address
+    }
+  }
+`;
