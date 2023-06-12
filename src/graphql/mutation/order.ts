@@ -9,8 +9,8 @@ export const CREATE_ORDER = gql`
     $email: String!
     $sellerId: ID!
     $buyerId: ID!
-    $productIds: [ID!]!
-    $quantities: [Int!]!
+    $productIds: [ID]!
+    $quantities: [Int]!
   ) {
     createOrder(
       name: $name
