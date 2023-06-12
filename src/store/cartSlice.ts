@@ -34,11 +34,12 @@ const cartSlice = createSlice({
         }
       }
     },
-    clearCart: () => [],
+    clearCart: () => [], // Return an empty array to clear the cart
   },
 });
 
 export const { addToCart, removeFromCart, clearCart } = cartSlice.actions;
 
+export default cartSlice.reducer;
 export default cartSlice.reducer;
 
