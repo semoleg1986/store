@@ -32,7 +32,7 @@ function Cart({ show = true }) {
   };
 
   const getTotalCost = () => {
-  if (cartItems.length === 0) {
+  if (!Array.isArray(cartItems) || cartItems.length === 0) {
     return 0;
   }
 
@@ -41,6 +41,7 @@ function Cart({ show = true }) {
     0
   );
 };
+
 
 
   const handleToggleCart = () => {
