@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useMutation, useQuery } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
@@ -30,6 +30,12 @@ function Order() {
   const [address, setAddress] = useState('');
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (cartItems.length === 0) {
+      navigate('/order-list');
+    }
+  }, [cartItems, navigate]);
+
   const handleCreateOrder = async () => {
     try {
       const productIds = cartItems.map((item) => item.product.id);
@@ -51,7 +57,7 @@ function Order() {
       });
       console.log(sellerId);
       dispatch(clearCart());
-      navigate('/order-details');
+      navigate('/order-list');
     } catch (err) {
       console.log('Error crreating order:', err);
     }

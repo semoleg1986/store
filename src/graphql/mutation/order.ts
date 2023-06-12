@@ -69,6 +69,13 @@ export const ORDER_BY_BUYER_ID = gql`
       address
       status
       updateDate
+      orderitemSet {
+        product {
+          name
+          price
+        }
+        quantity
+      }
     }
   }
 `;

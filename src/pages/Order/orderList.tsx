@@ -4,17 +4,7 @@ import { useQuery } from '@apollo/client';
 import { ORDER_BY_BUYER_ID } from '../../graphql/mutation/order';
 import { RootState } from '../../store';
 import './orderList.css';
-
-interface Order {
-  id: string;
-  receiptNumber: string;
-  name: string;
-  surname: string;
-  phoneNumber: string;
-  address: string;
-  status: string;
-  updateDate: string;
-}
+import { Order, OrderItem } from '../../types';
 
 function OrderList() {
   const buyerId = useSelector((state: RootState) => state.auth.idBuyer);
@@ -23,6 +13,19 @@ function OrderList() {
   });
 
   const [showArchive, setShowArchive] = useState(false);
+  const [orderDetailsVisible, setOrderDetailsVisible] = useState('');
+
+  const toggleArchive = () => {
+    setShowArchive(!showArchive);
+  };
+
+  const toggleOrderDetails = (orderId: string) => {
+    if (orderDetailsVisible === orderId) {
+      setOrderDetailsVisible('');
+    } else {
+      setOrderDetailsVisible(orderId);
+    }
+  };
 
   if (loading) {
     return <p>Loading...</p>;
@@ -31,6 +34,7 @@ function OrderList() {
   if (error) {
     return <p>Error: {error.message}</p>;
   }
+
   const orders = data.ordersByBuyerId;
 
   if (!orders) {
@@ -38,61 +42,87 @@ function OrderList() {
   }
 
   const archiveOrders = orders.filter((order: Order) => order.status === 'Завершен');
-  // const activeOrders = orders.filter((order: Order) => order.status !== 'Завершен');
-  if (!orders && !showArchive) {
-    return <p>No active orders available.</p>;
-  }
-
   const activeOrders = orders.filter((order: Order) => order.status !== 'Завершен');
 
-  const toggleArchive = () => {
-    setShowArchive(!showArchive);
+  const renderOrderDetails = (order: Order) => {
+    const calculateTotalAmount = (orderItems: OrderItem[]) => {
+      let total = 0;
+      orderItems.forEach((item) => {
+        total += item.product.price * item.quantity;
+      });
+      return total;
+    };
+
+    return (
+      <div className="order-details">
+        <h6>Items:</h6>
+        <ol>
+          {order.orderitemSet.map((item) => (
+            <li key={item.product.name}>
+              {item.product.name} - Quantity: {item.quantity} - Price: {item.product.price}
+            </li>
+          ))}
+        </ol>
+        <p>Total Amount: {calculateTotalAmount(order.orderitemSet)}</p>
+      </div>
+    );
+  };
+
+  const renderActiveOrders = () => {
+    return (
+      <div>
+        <h4>Active Orders</h4>
+        {activeOrders.map((order: Order) => (
+          <div key={order.id} className="order-item">
+            <p className="order-info">Receipt Number: {order.receiptNumber}</p>
+            <p className="order-info">Name: {order.name}</p>
+            <p className="order-info">Surname: {order.surname}</p>
+            <p className="order-info">Phone Number: {order.phoneNumber}</p>
+            <p className="order-info">Address: {order.address}</p>
+            <p className="order-info">Status: {order.status}</p>
+            <p className="order-info">Update Date: {order.updateDate}</p>
+            <button type="button" onClick={() => toggleOrderDetails(order.id)}>
+              Show Details
+            </button>
+            {orderDetailsVisible === order.id && renderOrderDetails(order)}
+          </div>
+        ))}
+      </div>
+    );
+  };
+
+  const renderArchiveOrders = () => {
+    return (
+      <div>
+        <h4>Archive Orders</h4>
+        {archiveOrders.map((order: Order) => (
+          <div key={order.id} className="order-item">
+            <p className="order-info">Receipt Number: {order.receiptNumber}</p>
+            <p className="order-info">Name: {order.name}</p>
+            <p className="order-info">Surname: {order.surname}</p>
+            <p className="order-info">Phone Number: {order.phoneNumber}</p>
+            <p className="order-info">Address: {order.address}</p>
+            <p className="order-info">Status: {order.status}</p>
+            <p className="order-info">Update Date: {order.updateDate}</p>
+            <button type="button" onClick={() => toggleOrderDetails(order.id)}>
+              Show Details
+            </button>
+            {orderDetailsVisible === order.id && renderOrderDetails(order)}
+          </div>
+        ))}
+      </div>
+    );
   };
 
   return (
     <div>
       <h3>Order List</h3>
-      {activeOrders.length > 0 && !showArchive && (
-        <div>
-          <h4>Active Orders</h4>
-          {activeOrders.map((order: Order) => (
-            <div key={order.id} className="order-item">
-              <p className="order-info">Receipt Number: {order.receiptNumber}</p>
-              <p className="order-info">Name: {order.name}</p>
-              <p className="order-info">Surname: {order.surname}</p>
-              <p className="order-info">Phone Number: {order.phoneNumber}</p>
-              <p className="order-info">Address: {order.address}</p>
-              <p className="order-info">Status: {order.status}</p>
-              <p className="order-info">Update Date: {order.updateDate}</p>
-            </div>
-          ))}
-        </div>
-      )}
+      {activeOrders.length > 0 && !showArchive && renderActiveOrders()}
       {activeOrders.length === 0 && !showArchive && <p>No active orders available.</p>}
-      {!showArchive && (
-        <button type="button" onClick={toggleArchive}>
-          View Archive Orders
-        </button>
-      )}
-      {showArchive && (
-        <div>
-          <h4>Archive Orders</h4>
-          {archiveOrders.map((order: Order) => (
-            <div key={order.id} className="order-item">
-              <p className="order-info">Receipt Number: {order.receiptNumber}</p>
-              <p className="order-info">Name: {order.name}</p>
-              <p className="order-info">Surname: {order.surname}</p>
-              <p className="order-info">Phone Number: {order.phoneNumber}</p>
-              <p className="order-info">Address: {order.address}</p>
-              <p className="order-info">Status: {order.status}</p>
-              <p className="order-info">Update Date: {order.updateDate}</p>
-            </div>
-          ))}
-          <button type="button" onClick={toggleArchive}>
-            Back to Active Orders
-          </button>
-        </div>
-      )}
+      {showArchive && renderArchiveOrders()}
+      <button type="button" onClick={toggleArchive}>
+        {showArchive ? 'View Active Orders' : 'View Archive Orders'}
+      </button>
     </div>
   );
 }
