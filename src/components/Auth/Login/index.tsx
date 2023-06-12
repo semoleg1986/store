@@ -5,11 +5,7 @@ import { useDispatch } from 'react-redux';
 import { LOGIN_USER } from '../../../graphql/mutation/auth';
 import { ROOT_PAGE } from '../../../routes';
 import { loginUser } from '../../../store/authSlice';
-
-interface LoginData {
-  username: string;
-  password: string;
-}
+import { LoginData } from '../../../types';
 
 function Login() {
   const [username, setUsername] = useState('');

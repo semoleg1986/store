@@ -9,3 +9,15 @@ export interface Product {
     name: string;
   };
 }
+
+export interface LoginData {
+  username: string;
+  password: string;
+}
+
+export interface CartItem {
+  quantity: number;
+  product: {
+    price: number;
+  };
+}

@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Dispatch } from 'redux';
 import { useNavigate } from 'react-router-dom';
 import { RootState } from '../../store';
-import { Product } from '../../types';
+import { CartItem, Product } from '../../types';
 
 import { addToCart, removeFromCart } from '../../store/cartSlice';
 import {
@@ -33,8 +33,7 @@ function Cart({ show = true }) {
 
   const getTotalCost = () =>
     cartItems.reduce(
-      (total: number, item: { quantity: number; product: { price: number } }) =>
-        total + item.quantity * item.product.price,
+      (total: number, item: CartItem) => total + item.quantity * item.product.price,
       0
     );
 
