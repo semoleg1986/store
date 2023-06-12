@@ -31,11 +31,17 @@ function Cart({ show = true }) {
     dispatch(addToCart({ product }));
   };
 
-  const getTotalCost = () =>
-    cartItems.reduce(
-      (total: number, item: CartItem) => total + item.quantity * item.product.price,
-      0
-    );
+  const getTotalCost = () => {
+  if (cartItems.length === 0) {
+    return 0;
+  }
+
+  return cartItems.reduce(
+    (total: number, item: CartItem) => total + item.quantity * item.product.price,
+    0
+  );
+};
+
 
   const handleToggleCart = () => {
     dispatch(toggleCart());
