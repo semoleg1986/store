@@ -8,7 +8,7 @@ describe('App component', () => {
     render(
       <BrowserRouter>
         <App />
-      </BrowserRouter>,
+      </BrowserRouter>
     );
   });
 });

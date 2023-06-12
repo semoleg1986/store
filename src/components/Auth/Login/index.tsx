@@ -18,14 +18,14 @@ function Login() {
   const dispatch = useDispatch();
 
   const [loginUserMutation, { loading, error }] = useMutation(LOGIN_USER, {
-    onCompleted: (data: any) => {
+    onCompleted: (data) => {
       const { token } = data.loginUser;
       const idBuyer = data.loginUser.user.buyerProfile.id;
       dispatch(loginUser({ token, idBuyer }));
       navigate(ROOT_PAGE);
     },
-    onError: (error: any) => {
-      console.error(error);
+    onError: (err) => {
+      console.error(err);
     },
   });
 

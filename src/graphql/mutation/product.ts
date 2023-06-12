@@ -8,7 +8,7 @@ const GET_PRODUCTS = gql`
       description
       price
       quantity
-      category{
+      category {
         name
       }
     }

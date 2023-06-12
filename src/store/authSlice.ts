@@ -3,25 +3,27 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 export interface AuthState {
   isAuthenticated: boolean;
   token: string | null;
-  idSeller: string | null;
+  idBuyer: string | null;
+  cart: string | null;
 }
 
 const initialState: AuthState = {
   isAuthenticated: false,
   token: null,
-  idSeller: null,
+  idBuyer: null,
+  cart: null,
 };
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    loginUser: (state, action: PayloadAction<{ token: string; idSeller: string }>) => {
+    loginUser: (state, action: PayloadAction<{ token: string; idBuyer: string }>) => {
       return {
         ...state,
         isAuthenticated: true,
         token: action.payload.token,
-        idSeller: action.payload.idSeller,
+        idBuyer: action.payload.idBuyer,
       };
     },
     logoutUser: (state) => {
@@ -29,7 +31,7 @@ const authSlice = createSlice({
         ...state,
         isAuthenticated: false,
         token: null,
-        idSeller: null,
+        idBuyer: null,
       };
     },
   },

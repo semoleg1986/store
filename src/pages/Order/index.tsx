@@ -34,16 +34,19 @@ function Order() {
       },
     })
       .then((response) => {
+        console.log(response);
         // Handle successful response, e.g., display success message or navigate to a success page
       })
       .catch((error) => {
+        console.error(error);
         // Handle error, e.g., display error message
       });
     dispatch(clearCart());
     navigate('/order-details');
   };
 
-  const getTotalCost = () => cartItems.reduce((total, item) => total + item.quantity * item.product.price, 0);
+  const getTotalCost = () =>
+    cartItems.reduce((total, item) => total + item.quantity * item.product.price, 0);
 
   return (
     <div>
@@ -61,24 +64,15 @@ function Order() {
             <tr key={item.product.id}>
               <td>{item.product.name}</td>
               <td>{item.quantity}</td>
-              <td>
-                $
-                {item.product.price}
-              </td>
-              <td>
-                $
-                {item.quantity * item.product.price}
-              </td>
+              <td>${item.product.price}</td>
+              <td>${item.quantity * item.product.price}</td>
             </tr>
           ))}
         </tbody>
         <tfoot>
           <tr>
             <td colSpan={3}>Total:</td>
-            <td>
-              $
-              {getTotalCost()}
-            </td>
+            <td>${getTotalCost()}</td>
           </tr>
         </tfoot>
       </table>
@@ -114,7 +108,9 @@ function Order() {
         onChange={(e) => setEmail(e.target.value)}
         placeholder="Email"
       />
-      <button onClick={handlePlaceOrder}>Place Order</button>
+      <button type="button" onClick={handlePlaceOrder}>
+        Place Order
+      </button>
     </div>
   );
 }

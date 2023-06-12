@@ -32,7 +32,11 @@ function Cart({ show = true }) {
   };
 
   const getTotalCost = () =>
-    cartItems.reduce((total, item) => total + item.quantity * item.product.price, 0);
+    cartItems.reduce(
+      (total: number, item: { quantity: number; product: { price: number } }) =>
+        total + item.quantity * item.product.price,
+      0
+    );
 
   const handleToggleCart = () => {
     dispatch(toggleCart());

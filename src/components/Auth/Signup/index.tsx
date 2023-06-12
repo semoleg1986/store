@@ -29,7 +29,6 @@ function Signup() {
         console.log(createdUserId);
 
         setShowBuyerFields(true);
-        // console.log(data);
         // Handle success or perform any other actions
       } else {
         const buyerData = await createBuyer({

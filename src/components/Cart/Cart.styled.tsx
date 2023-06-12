@@ -59,4 +59,3 @@ export const ButtonP = styled.button`
   border: none;
   cursor: pointer;
 `;
-

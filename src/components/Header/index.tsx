@@ -7,7 +7,7 @@ import { toggleCart } from '../../store/cartState';
 function Header() {
   const cartItems = useSelector((state: RootState) => state.cart);
   const dispatch = useDispatch();
-  const isCartVisible = useSelector((state: RootState) => state.cartstate.isVisible);
+  // const isCartVisible = useSelector((state: RootState) => state.cartstate.isVisible);
   const handleToggleCart = () => {
     dispatch(toggleCart());
   };
