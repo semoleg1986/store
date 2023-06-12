@@ -34,7 +34,7 @@ function Order() {
     try {
       const productsIds = cartItems.map((item) => item.product.id);
       const quantities = cartItems.map((item) => item.quantity);
-      const sellerId = cartItems.map((item) => item.product.seller.id);
+      const sellerId = cartItems.find((item) => item)?.product?.seller?.id;
       await createOrder({
         variables: {
           sellerId,
@@ -48,7 +48,7 @@ function Order() {
           quantities,
         },
       });
-      console.log(productsIds);
+      console.log(sellerId);
       dispatch(clearCart());
     } catch (err) {
       console.log('Error crreating order:', err);
