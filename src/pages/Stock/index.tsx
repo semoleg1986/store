@@ -6,7 +6,7 @@ import { Product } from '../../types';
 import { GET_SELLERS } from '../../graphql/mutation/product';
 import CardsStyle from '../../components/Cards/Cards.styled';
 import CardStyle from '../../components/Card/Card.styled';
-import { addToCart } from '../../store/cartSlice';
+import { addToCart, clearCart } from '../../store/cartSlice';
 import { Button } from '../../components/Form/Form.styled';
 import { CartWrapper } from '../../components/Cart/Cart.styled';
 import { RootState } from '../../store';
@@ -33,7 +33,7 @@ function Stock() {
   };
 
   return (
-    <>
+    <div>
       {selectedSeller ? (
         <div>
           <h3>{selectedSeller.companyName}</h3>
@@ -49,7 +49,17 @@ function Stock() {
               </CardStyle>
             ))}
           </CardsStyle>
-          <Button onClick={() => setSelectedSeller(null)}>Back to Sellers</Button>
+          <Button
+            onClick={() => {
+              dispatch(clearCart());
+              setSelectedSeller(null);
+            }}
+          >
+            Back to Sellers
+          </Button>
+          <CartWrapper isVisible={isCartVisible}>
+            <Cart />
+          </CartWrapper>
         </div>
       ) : (
         <CardsStyle>
@@ -61,11 +71,7 @@ function Stock() {
           ))}
         </CardsStyle>
       )}
-
-      <CartWrapper isVisible={isCartVisible}>
-        <Cart />
-      </CartWrapper>
-    </>
+    </div>
   );
 }
 
