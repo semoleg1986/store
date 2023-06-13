@@ -57,7 +57,7 @@ function Order() {
       });
       console.log(sellerId);
       dispatch(clearCart());
-      navigate('/order-list');
+      navigate('/order-placed');
     } catch (err) {
       console.log('Error crreating order:', err);
     }

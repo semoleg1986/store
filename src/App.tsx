@@ -15,9 +15,11 @@ import {
   SIGN_UP,
   SIGN_IN,
   ORDER_LIST_PAGE,
+  ORDER_PLACED,
 } from './routes';
 import Order from './pages/Order';
 import OrderList from './pages/Order/orderList';
+import OrderPlaced from './pages/Order/orderPLaced';
 
 function App() {
   const router = createBrowserRouter([
@@ -44,6 +46,10 @@ function App() {
         {
           path: ORDER_PAGE,
           element: <Order />,
+        },
+        {
+          path: ORDER_PLACED,
+          element: <OrderPlaced />,
         },
         {
           path: ORDER_LIST_PAGE,
