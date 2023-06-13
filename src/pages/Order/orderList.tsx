@@ -41,8 +41,8 @@ function OrderList() {
     return <p>No orders available.</p>;
   }
 
-  const archiveOrders = orders.filter((order: Order) => order.status === 'Завершен');
-  const activeOrders = orders.filter((order: Order) => order.status !== 'Завершен');
+  const archiveOrders = orders.filter((order: Order) => order.status === 'Выполнен');
+  const activeOrders = orders.filter((order: Order) => order.status !== 'Выполнен');
 
   const renderOrderDetails = (order: Order) => {
     const calculateTotalAmount = (orderItems: OrderItem[]) => {
