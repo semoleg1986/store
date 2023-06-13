@@ -94,14 +94,16 @@ function Order() {
               <TableCell>{item.product.name}</TableCell>
               <TableCell>{item.quantity}</TableCell>
               <TableCell>{item.product.price}</TableCell>
-              <TableCell>{item.quantity * item.product.price}.00</TableCell>
+              <TableCell>{item.quantity * item.product.price}</TableCell>
             </TableRow>
           ))}
         </TableBody>
-        <TableRow>
-          <TableCell>Total:</TableCell>
-          <TableCell>{totalPrice}.00</TableCell>
-        </TableRow>
+        <TableBody>
+          <TableRow>
+            <TableCell>Total:</TableCell>
+            <TableCell>{totalPrice}</TableCell>
+          </TableRow>
+        </TableBody>
       </CartTable>
 
       <h2>Personal Information</h2>
