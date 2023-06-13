@@ -4,7 +4,7 @@ import { useQuery } from '@apollo/client';
 import { ORDER_BY_BUYER_ID } from '../../graphql/mutation/order';
 import { RootState } from '../../store';
 import './orderList.css';
-import { Order, OrderItem } from '../../types';
+import { IOrder, IOrderItem } from '../../types';
 
 function OrderList() {
   const buyerId = useSelector((state: RootState) => state.auth.idBuyer);
@@ -41,11 +41,11 @@ function OrderList() {
     return <p>No orders available.</p>;
   }
 
-  const archiveOrders = orders.filter((order: Order) => order.status === 'Выполнен');
-  const activeOrders = orders.filter((order: Order) => order.status !== 'Выполнен');
+  const archiveOrders = orders.filter((order: IOrder) => order.status === 'Выполнен');
+  const activeOrders = orders.filter((order: IOrder) => order.status !== 'Выполнен');
 
-  const renderOrderDetails = (order: Order) => {
-    const calculateTotalAmount = (orderItems: OrderItem[]) => {
+  const renderOrderDetails = (order: IOrder) => {
+    const calculateTotalAmount = (orderItems: IOrderItem[]) => {
       let total = 0;
       orderItems.forEach((item) => {
         total += item.product.price * item.quantity;
@@ -72,7 +72,7 @@ function OrderList() {
     return (
       <div>
         <h4>Active Orders</h4>
-        {activeOrders.map((order: Order) => (
+        {activeOrders.map((order: IOrder) => (
           <div key={order.id} className="order-item">
             <p className="order-info">Receipt Number: {order.receiptNumber}</p>
             <p className="order-info">Name: {order.name}</p>
@@ -95,7 +95,7 @@ function OrderList() {
     return (
       <div>
         <h4>Archive Orders</h4>
-        {archiveOrders.map((order: Order) => (
+        {archiveOrders.map((order: IOrder) => (
           <div key={order.id} className="order-item">
             <p className="order-info">Receipt Number: {order.receiptNumber}</p>
             <p className="order-info">Name: {order.name}</p>

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { useDispatch, useSelector } from 'react-redux';
 import Cart from '../../components/Cart';
-import { Product } from '../../types';
+import { ISeller, IProduct } from '../../types';
 import { GET_SELLERS } from '../../graphql/mutation/product';
 import CardsStyle from '../../components/Cards/Cards.styled';
 import CardStyle from '../../components/Card/Card.styled';
@@ -11,24 +11,17 @@ import { Button } from '../../components/Form/Form.styled';
 import { CartWrapper } from '../../components/Cart/Cart.styled';
 import { RootState } from '../../store';
 
-interface Seller {
-  id: string;
-  companyName: string;
-  description: string;
-  products: Product[];
-}
-
 function Stock() {
-  const { data } = useQuery<{ sellers: Seller[] }>(GET_SELLERS);
+  const { data } = useQuery<{ sellers: ISeller[] }>(GET_SELLERS);
   const dispatch = useDispatch();
   const isCartVisible = useSelector((state: RootState) => state.cartstate.isVisible);
-  const [selectedSeller, setSelectedSeller] = useState<Seller | null>(null);
+  const [selectedSeller, setSelectedSeller] = useState<ISeller | null>(null);
 
-  const handleAddToCart = (product: Product) => {
+  const handleAddToCart = (product: IProduct) => {
     dispatch(addToCart({ product }));
   };
 
-  const handleSellerClick = (seller: Seller) => {
+  const handleSellerClick = (seller: ISeller) => {
     setSelectedSeller(seller);
   };
 
@@ -39,7 +32,7 @@ function Stock() {
           <h3>{selectedSeller.companyName}</h3>
           <p>{selectedSeller.description}</p>
           <CardsStyle>
-            {selectedSeller.products.map((product: Product) => (
+            {selectedSeller.products.map((product: IProduct) => (
               <CardStyle key={product.id}>
                 <h5>{product.name}</h5>
                 <p>{product.description}</p>

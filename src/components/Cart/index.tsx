@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Dispatch } from 'redux';
 import { useNavigate } from 'react-router-dom';
 import { RootState } from '../../store';
-import { CartItem, Product } from '../../types';
+import { ICartItem, IProduct } from '../../types';
 
 import { addToCart, removeFromCart } from '../../store/cartSlice';
 import {
@@ -27,7 +27,7 @@ function Cart({ show = true }) {
   const handleRemoveFromCart = (productId: string) => {
     dispatch(removeFromCart({ productId }));
   };
-  const handleAddToCart = (product: Product) => {
+  const handleAddToCart = (product: IProduct) => {
     dispatch(addToCart({ product }));
   };
 
@@ -37,7 +37,7 @@ function Cart({ show = true }) {
     }
 
     return cartItems.reduce(
-      (total: number, item: CartItem) => total + item.quantity * item.product.price,
+      (total: number, item: ICartItem) => total + item.quantity * item.product.price,
       0
     );
   };

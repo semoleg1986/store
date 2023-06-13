@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { LOGIN_USER } from '../../../graphql/mutation/auth';
 import { ROOT_PAGE } from '../../../routes';
 import { loginUser } from '../../../store/authSlice';
-import { LoginData } from '../../../types';
+import { ILoginData } from '../../../types';
 
 function Login() {
   const [username, setUsername] = useState('');
@@ -28,7 +28,7 @@ function Login() {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    const loginData: LoginData = {
+    const loginData: ILoginData = {
       username,
       password,
     };

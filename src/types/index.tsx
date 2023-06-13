@@ -1,4 +1,4 @@
-export interface Product {
+export interface IProduct {
   id: string;
   name: string;
   description: string;
@@ -13,19 +13,19 @@ export interface Product {
   };
 }
 
-export interface LoginData {
+export interface ILoginData {
   username: string;
   password: string;
 }
 
-export interface CartItem {
+export interface ICartItem {
   quantity: number;
   product: {
     price: number;
   };
 }
 
-export interface Order {
+export interface IOrder {
   id: string;
   receiptNumber: string;
   name: string;
@@ -34,13 +34,20 @@ export interface Order {
   address: string;
   status: string;
   updateDate: string;
-  orderitemSet: OrderItem[];
+  orderitemSet: IOrderItem[];
 }
 
-export interface OrderItem {
+export interface IOrderItem {
   product: {
     name: string;
     price: number;
   };
   quantity: number;
+}
+
+export interface ISeller {
+  id: string;
+  companyName: string;
+  description: string;
+  products: IProduct[];
 }
