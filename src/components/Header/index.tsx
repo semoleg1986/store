@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { ROOT_PAGE, STOCK_PAGE, ORDER_PAGE } from '../../routes';
-import { HeaderStyled, CustomNavLink, CartButton } from './Header.styled';
+import { HeaderStyled, CustomNavLink, CartButton } from '../styles/Header.styled';
 import { toggleCart } from '../../store/cartState';
 
 function Header() {

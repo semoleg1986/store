@@ -13,7 +13,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '../../components/Cart/Cart.styled';
+} from '../../components/styles/Cart.styled';
 
 function Order() {
   const buyerId = useSelector((state: RootState) => state.auth.idBuyer);

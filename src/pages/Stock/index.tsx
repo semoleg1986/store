@@ -4,11 +4,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import Cart from '../../components/Cart';
 import { ISeller, IProduct } from '../../types';
 import { GET_SELLERS } from '../../graphql/mutation/product';
-import CardsStyle from '../../components/Cards/Cards.styled';
-import CardStyle from '../../components/Card/Card.styled';
+import CardsStyle from '../../components/styles/Cards.styled';
+import CardStyle from '../../components/styles/Card.styled';
 import { addToCart, clearCart } from '../../store/cartSlice';
-import { Button } from '../../components/Form/Form.styled';
-import { CartWrapper } from '../../components/Cart/Cart.styled';
+import { Button } from '../../components/styles/Form.styled';
+import { CartWrapper } from '../../components/styles/Cart.styled';
 import { RootState } from '../../store';
 
 function Stock() {

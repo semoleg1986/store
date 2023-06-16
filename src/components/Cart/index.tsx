@@ -15,9 +15,9 @@ import {
   TableRow,
   TotalCell,
   TotalRow,
-} from './Cart.styled';
+} from '../styles/Cart.styled';
 import { toggleCart } from '../../store/cartState';
-import { Button } from '../Form/Form.styled';
+import { Button } from '../styles/Form.styled';
 
 function Cart({ show = true }) {
   const cartItems = useSelector((state: RootState) => state.cart);
