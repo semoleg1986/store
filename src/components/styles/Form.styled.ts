@@ -19,7 +19,8 @@ export const Select = styled.select`
 
 export const Button = styled.button`
   padding: 5px 10px;
-  background-color: #4caf50;
+  background-color: #4682b4;
+  border-radius: 5px;
   margin: 5px;
   color: white;
   border: none;

@@ -3,9 +3,13 @@ import styled from 'styled-components';
 const CardStyle = styled.div`
   background-color: white;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
   padding: 1rem;
   text-align: center;
   transition: box-shadow 0.3s ease-in-out;
+  height: 300px;
+  max-width: 250px;
+  cursor: pointer;
 
   h5 {
     margin: 10px;

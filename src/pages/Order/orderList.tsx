@@ -5,6 +5,7 @@ import { ORDER_BY_BUYER_ID } from '../../graphql/mutation/order';
 import { RootState } from '../../store';
 import './orderList.css';
 import { IOrder, IOrderItem } from '../../types';
+import { Button } from '../../components/styles/Form.styled';
 
 function OrderList() {
   const buyerId = useSelector((state: RootState) => state.auth.idBuyer);
@@ -116,13 +117,13 @@ function OrderList() {
 
   return (
     <div>
-      <h3>Order List</h3>
+      <h3>Order History</h3>
       {activeOrders.length > 0 && !showArchive && renderActiveOrders()}
       {activeOrders.length === 0 && !showArchive && <p>No active orders available.</p>}
       {showArchive && renderArchiveOrders()}
-      <button type="button" onClick={toggleArchive}>
+      <Button type="button" onClick={toggleArchive}>
         {showArchive ? 'View Active Orders' : 'View Archive Orders'}
-      </button>
+      </Button>
     </div>
   );
 }

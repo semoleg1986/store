@@ -7,13 +7,12 @@ import { Button, FormContainer, Input } from '../../styles/Form.styled';
 function Signup() {
   const [createUser] = useMutation(CREATE_USER);
   const [createBuyer] = useMutation(CREATE_BUYER);
-  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
   const [showBuyerFields, setShowBuyerFields] = useState(false);
   const [name, setName] = useState('');
   const [surname, setSurname] = useState('');
-  const [address, setAddress] = useState('');
+  // const [address, setAddress] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [userId, setUserId] = useState(null);
   const navigate = useNavigate();
@@ -22,7 +21,7 @@ function Signup() {
     try {
       if (!showBuyerFields) {
         const { data } = await createUser({
-          variables: { email, password, username },
+          variables: { password, username },
         });
         const createdUserId = data.createUser.user.id;
         setUserId(createdUserId);
@@ -36,7 +35,6 @@ function Signup() {
             name,
             surname,
             phoneNumber,
-            address,
             userId,
           },
         });
@@ -46,7 +44,6 @@ function Signup() {
         setName('');
         setSurname('');
         setPhoneNumber('');
-        setAddress('');
 
         setShowBuyerFields(false);
       }
@@ -62,22 +59,16 @@ function Signup() {
         {!showBuyerFields && (
           <>
             <Input
-              type="email"
-              placeholder="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type="text"
+              placeholder="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
             />
             <Input
               type="password"
               placeholder="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-            />
-            <Input
-              type="text"
-              placeholder="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
             />
           </>
         )}
@@ -101,12 +92,6 @@ function Signup() {
               placeholder="phone number"
               value={phoneNumber}
               onChange={(e) => setPhoneNumber(e.target.value)}
-            />
-            <Input
-              type="text"
-              placeholder="address"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
             />
           </>
         )}
