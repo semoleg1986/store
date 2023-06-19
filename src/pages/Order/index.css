@@ -51,3 +51,7 @@ input {
 .total {
     margin-top: 10px;
 }
+
+.small-text {
+    font-size: 75%;
+}

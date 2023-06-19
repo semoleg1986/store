@@ -6,14 +6,6 @@ import { RootState } from '../../store';
 import { CREATE_ORDER } from '../../graphql/mutation/order';
 import { clearCart } from '../../store/cartSlice';
 import { GET_BUYER_BY_ID } from '../../graphql/mutation/auth';
-import {
-  CartTable,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '../../components/styles/Cart.styled';
 import './index.css';
 import { Button } from '../../components/styles/Form.styled';
 
@@ -26,13 +18,18 @@ function Order() {
   const { loading, error, data } = useQuery(GET_BUYER_BY_ID, {
     variables: { buyerId },
   });
-  if (data) console.log(data.buyerById.name);
+  // if (data) console.log(data.buyerById.name);
 
-  const [phoneNumber, setPhoneNumber] = useState('');
+  // const [phone, setPhone] = useState('');
+  const [phoneEditable, setPhoneEditable] = useState('');
   const [address, setAddress] = useState('');
   const [email, setEmail] = useState('');
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setPhoneEditable(data?.buyerById?.phoneNumber || '');
+  }, [data?.buyerById?.phoneNumber]);
 
   useEffect(() => {
     if (cartItems.length === 0) {
@@ -45,14 +42,14 @@ function Order() {
       const productIds = cartItems.map((item) => item.product.id);
       const quantities = cartItems.map((item) => item.quantity);
       const sellerId = cartItems.find((item) => item)?.product?.seller?.id;
-      console.log(productIds); // добавил consolelog для проверки ProductsIds
+      // console.log(productIds); // добавил consolelog для проверки ProductsIds
       await createOrder({
         variables: {
           sellerId,
           buyerId,
           name: data.buyerById.name,
           surname: data.buyerById.surname,
-          phoneNumber: data.buyerById.phoneNumber,
+          phoneNumber: phoneEditable,
           address,
           email,
           productIds,
@@ -87,6 +84,7 @@ function Order() {
           <label htmlFor="email">
             Email address
             <input type="email" value="" onChange={(e) => setEmail(e.target.value)} />
+            <span className="small-text">(enter your contact email addess)</span>
           </label>
           <br />
           <h3>Shipping information</h3>
@@ -104,14 +102,16 @@ function Order() {
             Phone
             <input
               type="text"
-              value={phoneNumber || data.buyerById?.phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
+              value={phoneEditable}
+              onChange={(e) => setPhoneEditable(e.target.value)}
             />
+            <span className="small-text">(you can change your contact phone number)</span>
           </label>
           <br />
           <label htmlFor="address">
             Address
             <input type="text" value={address} onChange={(e) => setAddress(e.target.value)} />
+            <span className="small-text">(enter shipping address)</span>
           </label>
           <br />
         </form>
@@ -120,19 +120,23 @@ function Order() {
       <div className="order-summary">
         <h3>Order summary</h3>
         <table className="order-table">
-          {cartItems.map((item) => (
-            <tr key={item.product.id} className="order-product">
-              <td>{item.product.name}</td>
-              <td>{item.product.description}</td>
-              <td>{item.product.price}</td>
-              <td>{item.quantity}</td>
-              <td>{(item.quantity * item.product.price).toFixed(2)}</td>
+          <tbody>
+            {cartItems.map((item) => (
+              <tr key={item.product.id} className="order-product">
+                <td>{item.product.name}</td>
+                <td>{item.product.description}</td>
+                <td>{item.product.price}</td>
+                <td>{item.quantity}</td>
+                <td>{(item.quantity * item.product.price).toFixed(2)}</td>
+              </tr>
+            ))}
+          </tbody>
+          <tbody>
+            <tr>
+              <td>Total:</td>
+              <td>{totalPrice}</td>
             </tr>
-          ))}
-          <tr>
-            <td>Total:</td>
-            <td>{totalPrice}</td>
-          </tr>
+          </tbody>
         </table>
       </div>
       <Button type="button" onClick={handleCreateOrder}>
