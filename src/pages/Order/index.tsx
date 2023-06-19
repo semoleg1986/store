@@ -18,9 +18,7 @@ function Order() {
   const { loading, error, data } = useQuery(GET_BUYER_BY_ID, {
     variables: { buyerId },
   });
-  // if (data) console.log(data.buyerById.name);
 
-  // const [phone, setPhone] = useState('');
   const [phoneEditable, setPhoneEditable] = useState('');
   const [address, setAddress] = useState('');
   const [email, setEmail] = useState('');
@@ -31,18 +29,11 @@ function Order() {
     setPhoneEditable(data?.buyerById?.phoneNumber || '');
   }, [data?.buyerById?.phoneNumber]);
 
-  useEffect(() => {
-    if (cartItems.length === 0) {
-      navigate('/order-list');
-    }
-  }, [cartItems, navigate]);
-
   const handleCreateOrder = async () => {
     try {
       const productIds = cartItems.map((item) => item.product.id);
       const quantities = cartItems.map((item) => item.quantity);
       const sellerId = cartItems.find((item) => item)?.product?.seller?.id;
-      // console.log(productIds); // добавил consolelog для проверки ProductsIds
       await createOrder({
         variables: {
           sellerId,
@@ -83,7 +74,7 @@ function Order() {
         <form>
           <label htmlFor="email">
             Email address
-            <input type="email" value="" onChange={(e) => setEmail(e.target.value)} />
+            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
             <span className="small-text">(enter your contact email addess)</span>
           </label>
           <br />

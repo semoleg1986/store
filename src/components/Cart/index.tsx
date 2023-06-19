@@ -96,7 +96,6 @@ function Cart() {
           continue shopping &rarr;
         </a>
       </p>
-      {/* <Button onClick={handleToggleCart}>Exit</Button> */}
     </div>
   );
 }

@@ -62,7 +62,7 @@ function OrderList() {
   const renderActiveOrders = () => {
     return (
       <div>
-        <h4>Active Orders</h4>
+        <h3>Active Orders</h3>
         {activeOrders.map((order: IOrder) => (
           <div key={order.id} className="order-item">
             <p className="order-info">
@@ -84,7 +84,7 @@ function OrderList() {
   const renderArchiveOrders = () => {
     return (
       <div>
-        <h4>Archive Orders</h4>
+        <h3>Archive Orders</h3>
         {archiveOrders.map((order: IOrder) => (
           <div key={order.id} className="order-item">
             <p className="order-info">
@@ -105,7 +105,7 @@ function OrderList() {
 
   return (
     <div className="order-history-container">
-      <h3>Order History</h3>
+      <h2>Order History</h2>
       {activeOrders.length > 0 && !showArchive && renderActiveOrders()}
       {activeOrders.length === 0 && !showArchive && <p>No active orders available.</p>}
       {showArchive && renderArchiveOrders()}
