@@ -90,14 +90,12 @@ function Cart() {
         </CartTable>
       )}
       {cartItems.length > 0 && <Button onClick={handleCheckout}>Checkout</Button>}
-      {cartItems.length > 0 && (
-        <p>
-          or{' '}
-          <a href="#" role="button" onClick={handleToggleCart}>
-            continue shopping &rarr;
-          </a>
-        </p>
-      )}
+      {cartItems.length > 0 && <p>or </p>}
+      <p>
+        <a href="#" role="button" onClick={handleToggleCart}>
+          continue shopping &rarr;
+        </a>
+      </p>
       {/* <Button onClick={handleToggleCart}>Exit</Button> */}
     </div>
   );

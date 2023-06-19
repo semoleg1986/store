@@ -14,18 +14,9 @@ function OrderList() {
   });
 
   const [showArchive, setShowArchive] = useState(false);
-  const [orderDetailsVisible, setOrderDetailsVisible] = useState('');
 
   const toggleArchive = () => {
     setShowArchive(!showArchive);
-  };
-
-  const toggleOrderDetails = (orderId: string) => {
-    if (orderDetailsVisible === orderId) {
-      setOrderDetailsVisible('');
-    } else {
-      setOrderDetailsVisible(orderId);
-    }
   };
 
   if (loading) {
@@ -84,17 +75,6 @@ function OrderList() {
               Status<span>{order.status}</span>
             </p>
             {renderOrderDetails(order)}
-
-            {/* <p className="order-info-name">Name: {order.name}</p>
-            <p className="order-info-surname">Surname: {order.surname}</p>
-            <p className="order-info-phone">Phone Number: {order.phoneNumber}</p>
-            <p className="order-info-address">Address: {order.address}</p>
-            <p className="order-info-status">Status: {order.status}</p> */}
-
-            {/* <button type="button" onClick={() => toggleOrderDetails(order.id)}>
-              Show Details
-            </button>
-            {orderDetailsVisible === order.id && renderOrderDetails(order)} */}
           </div>
         ))}
       </div>
@@ -107,17 +87,16 @@ function OrderList() {
         <h4>Archive Orders</h4>
         {archiveOrders.map((order: IOrder) => (
           <div key={order.id} className="order-item">
-            <p className="order-number">Receipt Number: {order.receiptNumber}</p>
-            <p className="order-info-name">Name: {order.name}</p>
-            <p className="order-info-surname">Surname: {order.surname}</p>
-            <p className="order-info-phone">Phone Number: {order.phoneNumber}</p>
-            <p className="order-info-address">Address: {order.address}</p>
-            <p className="order-info-status">Status: {order.status}</p>
-            <p className="order-info-date">Update Date: {order.updateDate}</p>
-            <button type="button" onClick={() => toggleOrderDetails(order.id)}>
-              Show Details
-            </button>
-            {orderDetailsVisible === order.id && renderOrderDetails(order)}
+            <p className="order-info">
+              Order Number<span>{order.receiptNumber}</span>
+            </p>
+            <p className="order-info">
+              Update Date<span>{order.updateDate.substring(0, 10)}</span>
+            </p>
+            <p className="order-info">
+              Status<span>{order.status}</span>
+            </p>
+            {renderOrderDetails(order)}
           </div>
         ))}
       </div>
