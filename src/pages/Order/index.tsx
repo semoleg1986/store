@@ -14,6 +14,8 @@ import {
   TableHeader,
   TableRow,
 } from '../../components/styles/Cart.styled';
+import './index.css';
+import { Button } from '../../components/styles/Form.styled';
 
 function Order() {
   const buyerId = useSelector((state: RootState) => state.auth.idBuyer);
@@ -28,6 +30,8 @@ function Order() {
 
   const [phoneNumber, setPhoneNumber] = useState('');
   const [address, setAddress] = useState('');
+  const [email, setEmail] = useState('');
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -49,8 +53,8 @@ function Order() {
           name: data.buyerById.name,
           surname: data.buyerById.surname,
           phoneNumber: data.buyerById.phoneNumber,
-          address: data.buyerById.address,
-          email: data.buyerById.user.email,
+          address,
+          email,
           productIds,
           quantities,
         },
@@ -71,75 +75,80 @@ function Order() {
     return <div>Error occurred</div>;
   }
 
-  const totalPrice = cartItems.reduce(
-    (total, item) => total + item.product.price * item.quantity,
-    0
-  );
+  const totalPrice = cartItems
+    .reduce((total, item) => total + item.product.price * item.quantity, 0)
+    .toFixed(2);
 
   return (
-    <div>
-      <h1>Order Details</h1>
-      <CartTable>
-        <TableHead>
-          <tr>
-            <TableHeader>Product Name</TableHeader>
-            <TableHeader>Quantity</TableHeader>
-            <TableHeader>Price</TableHeader>
-            <TableHeader>Subtotal</TableHeader>
-          </tr>
-        </TableHead>
-        <TableBody>
-          {cartItems.map((item) => (
-            <TableRow key={item.product.id}>
-              <TableCell>{item.product.name}</TableCell>
-              <TableCell>{item.quantity}</TableCell>
-              <TableCell>{item.product.price}</TableCell>
-              <TableCell>{item.quantity * item.product.price}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-        <TableBody>
-          <TableRow>
-            <TableCell>Total:</TableCell>
-            <TableCell>{totalPrice}</TableCell>
-          </TableRow>
-        </TableBody>
-      </CartTable>
+    <div className="order-confirmation">
+      <div className="contact-info">
+        <h3>Contact information</h3>
+        <form>
+          <label htmlFor="email">
+            Email address
+            <input type="email" value="" onChange={(e) => setEmail(e.target.value)} />
+          </label>
+          <br />
+          <h3>Shipping information</h3>
+          <label htmlFor="name">
+            First Name
+            <input type="text" value={data.buyerById.name} readOnly />
+          </label>
+          <br />
+          <label htmlFor="surname">
+            Last Name
+            <input type="text" value={data.buyerById.surname} readOnly />
+          </label>
+          <br />
+          <label htmlFor="phoneNumber">
+            Phone
+            <input
+              type="text"
+              value={phoneNumber || data.buyerById?.phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+            />
+          </label>
+          <br />
+          <label htmlFor="address">
+            Address
+            <input type="text" value="" onChange={(e) => setAddress(e.target.value)} />
+          </label>
+          <br />
+        </form>
+      </div>
 
-      <h2>Personal Information</h2>
-      {/* Форма для имени, фамилии, телефона и адреса */}
-      <form>
-        <label htmlFor="name">
-          First Name:
-          <input type="text" value={data.buyerById.name} readOnly />
-        </label>
-        <br />
-        <label htmlFor="surname">
-          Last Name:
-          <input type="text" value={data.buyerById.surname} readOnly />
-        </label>
-        <br />
-        <label htmlFor="phoneNumber">
-          Phone:
-          <input
-            type="text"
-            value={phoneNumber || data.buyerById?.phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
-          />
-        </label>
-        <br />
-        <label htmlFor="address">
-          Address:
-          <input
-            type="text"
-            value={address || data.buyerById?.address}
-            onChange={(e) => setAddress(e.target.value)}
-          />
-        </label>
-      </form>
-      <button type="button" onClick={handleCreateOrder}>
-        Place Order
-      </button>
+      <div className="order-summary">
+        <h3>Order summary</h3>
+        <CartTable>
+          <TableHead>
+            <tr>
+              <TableHeader>Product Name</TableHeader>
+              <TableHeader>Quantity</TableHeader>
+              <TableHeader>Price</TableHeader>
+              <TableHeader>Subtotal</TableHeader>
+            </tr>
+          </TableHead>
+          <TableBody>
+            {cartItems.map((item) => (
+              <TableRow key={item.product.id}>
+                <TableCell>{item.product.name}</TableCell>
+                <TableCell>{item.quantity}</TableCell>
+                <TableCell>{item.product.price}</TableCell>
+                <TableCell>{(item.quantity * item.product.price).toFixed(2)}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+          <TableBody>
+            <TableRow>
+              <TableCell>Total:</TableCell>
+              <TableCell>{totalPrice}</TableCell>
+            </TableRow>
+          </TableBody>
+        </CartTable>
+      </div>
+      <Button type="button" onClick={handleCreateOrder}>
+        Confirm order
+      </Button>
     </div>
   );
 }

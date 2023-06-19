@@ -56,14 +56,13 @@ function OrderList() {
 
     return (
       <div className="order-details">
-        <h6>Items:</h6>
-        <ol>
+        <ul>
           {order.orderitemSet.map((item) => (
             <li key={item.product.name}>
               {item.product.name} - Quantity: {item.quantity} - Price: {item.product.price}
             </li>
           ))}
-        </ol>
+        </ul>
         <p>Total Amount: {calculateTotalAmount(order.orderitemSet)}</p>
       </div>
     );
@@ -75,17 +74,27 @@ function OrderList() {
         <h4>Active Orders</h4>
         {activeOrders.map((order: IOrder) => (
           <div key={order.id} className="order-item">
-            <p className="order-info">Receipt Number: {order.receiptNumber}</p>
-            <p className="order-info">Name: {order.name}</p>
-            <p className="order-info">Surname: {order.surname}</p>
-            <p className="order-info">Phone Number: {order.phoneNumber}</p>
-            <p className="order-info">Address: {order.address}</p>
-            <p className="order-info">Status: {order.status}</p>
-            <p className="order-info">Update Date: {order.updateDate}</p>
-            <button type="button" onClick={() => toggleOrderDetails(order.id)}>
+            <p className="order-info">
+              Order Number<span>{order.receiptNumber}</span>
+            </p>
+            <p className="order-info">
+              Update Date<span>{order.updateDate.substring(0, 10)}</span>
+            </p>
+            <p className="order-info">
+              Status<span>{order.status}</span>
+            </p>
+            {renderOrderDetails(order)}
+
+            {/* <p className="order-info-name">Name: {order.name}</p>
+            <p className="order-info-surname">Surname: {order.surname}</p>
+            <p className="order-info-phone">Phone Number: {order.phoneNumber}</p>
+            <p className="order-info-address">Address: {order.address}</p>
+            <p className="order-info-status">Status: {order.status}</p> */}
+
+            {/* <button type="button" onClick={() => toggleOrderDetails(order.id)}>
               Show Details
             </button>
-            {orderDetailsVisible === order.id && renderOrderDetails(order)}
+            {orderDetailsVisible === order.id && renderOrderDetails(order)} */}
           </div>
         ))}
       </div>
@@ -98,13 +107,13 @@ function OrderList() {
         <h4>Archive Orders</h4>
         {archiveOrders.map((order: IOrder) => (
           <div key={order.id} className="order-item">
-            <p className="order-info">Receipt Number: {order.receiptNumber}</p>
-            <p className="order-info">Name: {order.name}</p>
-            <p className="order-info">Surname: {order.surname}</p>
-            <p className="order-info">Phone Number: {order.phoneNumber}</p>
-            <p className="order-info">Address: {order.address}</p>
-            <p className="order-info">Status: {order.status}</p>
-            <p className="order-info">Update Date: {order.updateDate}</p>
+            <p className="order-number">Receipt Number: {order.receiptNumber}</p>
+            <p className="order-info-name">Name: {order.name}</p>
+            <p className="order-info-surname">Surname: {order.surname}</p>
+            <p className="order-info-phone">Phone Number: {order.phoneNumber}</p>
+            <p className="order-info-address">Address: {order.address}</p>
+            <p className="order-info-status">Status: {order.status}</p>
+            <p className="order-info-date">Update Date: {order.updateDate}</p>
             <button type="button" onClick={() => toggleOrderDetails(order.id)}>
               Show Details
             </button>
@@ -116,7 +125,7 @@ function OrderList() {
   };
 
   return (
-    <div>
+    <div className="order-history-container">
       <h3>Order History</h3>
       {activeOrders.length > 0 && !showArchive && renderActiveOrders()}
       {activeOrders.length === 0 && !showArchive && <p>No active orders available.</p>}
