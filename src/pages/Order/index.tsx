@@ -111,7 +111,7 @@ function Order() {
           <br />
           <label htmlFor="address">
             Address
-            <input type="text" value="" onChange={(e) => setAddress(e.target.value)} />
+            <input type="text" value={address} onChange={(e) => setAddress(e.target.value)} />
           </label>
           <br />
         </form>
@@ -119,32 +119,21 @@ function Order() {
 
       <div className="order-summary">
         <h3>Order summary</h3>
-        <CartTable>
-          <TableHead>
-            <tr>
-              <TableHeader>Product Name</TableHeader>
-              <TableHeader>Quantity</TableHeader>
-              <TableHeader>Price</TableHeader>
-              <TableHeader>Subtotal</TableHeader>
+        <table className="order-table">
+          {cartItems.map((item) => (
+            <tr key={item.product.id} className="order-product">
+              <td>{item.product.name}</td>
+              <td>{item.product.description}</td>
+              <td>{item.product.price}</td>
+              <td>{item.quantity}</td>
+              <td>{(item.quantity * item.product.price).toFixed(2)}</td>
             </tr>
-          </TableHead>
-          <TableBody>
-            {cartItems.map((item) => (
-              <TableRow key={item.product.id}>
-                <TableCell>{item.product.name}</TableCell>
-                <TableCell>{item.quantity}</TableCell>
-                <TableCell>{item.product.price}</TableCell>
-                <TableCell>{(item.quantity * item.product.price).toFixed(2)}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-          <TableBody>
-            <TableRow>
-              <TableCell>Total:</TableCell>
-              <TableCell>{totalPrice}</TableCell>
-            </TableRow>
-          </TableBody>
-        </CartTable>
+          ))}
+          <tr>
+            <td>Total:</td>
+            <td>{totalPrice}</td>
+          </tr>
+        </table>
       </div>
       <Button type="button" onClick={handleCreateOrder}>
         Confirm order
